@@ -11,6 +11,7 @@ public class MatchDates_03 {
         String datesString = sc.nextLine();
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(datesString);
+
         while (matcher.find()){
             String day = matcher.group("day");
             String month = matcher.group("month");
