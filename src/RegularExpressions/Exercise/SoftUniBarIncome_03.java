@@ -28,5 +28,6 @@ public class SoftUniBarIncome_03 {
             input = sc.nextLine();
         }
         System.out.printf("Total income: %.2f", totalIncome);
+
     }
 }
