@@ -9,7 +9,7 @@ public class ExtractEmails_06 {
         Scanner sc = new Scanner(System.in);
         String input = sc.nextLine();
 
-        String regex = "[\\w\\-.]+@([\\w-]+\\.)+[\\w-]+";
+        String regex = "[a-zA-Z]+([.\\-_]?[\\w+])*@[\\w-]+\\.[\\w-](\\.?[\\w]+)*";
 
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(input);
