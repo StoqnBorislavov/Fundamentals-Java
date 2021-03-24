@@ -11,7 +11,7 @@ public class EmojiDetector_02 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         String regexForThreshold = "[\\d]";
-        String emojiRegex = "([:*]{1})\\1[A-Z][a-z][a-z]+(\\1)(\\1)";
+        String emojiRegex = "(?<separator>[:\\*])\\1(?<emoji>[A-Z][a-z]{2,})\\1\\1";
 
         String input = sc.nextLine();
         Pattern patternThreshold = Pattern.compile(regexForThreshold);
@@ -19,38 +19,33 @@ public class EmojiDetector_02 {
         Matcher matcherThreshold = patternThreshold.matcher(input);
         Matcher matcherEmoji = patternEmoji.matcher(input);
 
-        BigDecimal coolThreshold = new BigDecimal(1);
+        long coolThreshold = 1;
         while (matcherThreshold.find()) {
             int number = Integer.parseInt(matcherThreshold.group());
-            coolThreshold = coolThreshold.multiply(new BigDecimal(number));
+            coolThreshold *= Integer.parseInt(matcherThreshold.group());
         }
+        System.out.printf("Cool threshold: %d%n", coolThreshold);
         int emojiCount = 0;
         List<String> emojis = new ArrayList<>();
         while (matcherEmoji.find()) {
             emojiCount++;
-            long currentCoolness = foundTheCoolness(matcherEmoji.group());
-            int comparing = coolThreshold.compareTo(new BigDecimal(currentCoolness));
-            if (comparing == -1 || comparing == 0) {
-                emojis.add(matcherEmoji.group());
+            String separator = matcherEmoji.group("separator");
+            String emojiText = matcherEmoji.group("emoji");
+            long currentCoolness = foundTheCoolness(emojiText);
+            if (currentCoolness >= coolThreshold) {
+                String newEmoji = separator + separator + emojiText + separator + separator;
+                emojis.add(newEmoji);
             }
-        }
-        if(!coolThreshold.equals(new BigDecimal(0))) {
-            System.out.println("Cool threshold: " + coolThreshold);
         }
         System.out.printf("%d emojis found in the text. The cool ones are:%n", emojiCount);
-        if(!coolThreshold.equals(new BigDecimal(0))) {
-            for (int i = 0; i < emojis.size(); i++) {
-                System.out.println(emojis.get(i));
-            }
-        }
+        emojis.stream().forEach(System.out::println);
 
     }
 
-    private static long foundTheCoolness(String emoji) {
-        String cool = emoji.substring(2, emoji.length() - 2);
-        long coolness = 0L;
-        for (int i = 0; i < cool.length(); i++) {
-            char current = cool.charAt(i);
+    private static int foundTheCoolness(String emoji) {
+        int coolness = 0;
+        for (int i = 0; i < emoji.length(); i++) {
+            char current = emoji.charAt(i);
             coolness += current;
         }
         return coolness;
