@@ -1,3 +1,5 @@
+package PastFinalExams;
+
 import java.math.BigInteger;
 import java.util.Scanner;
 
@@ -5,7 +7,6 @@ public class TheImitationGame_01 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         StringBuilder message = new StringBuilder(sc.nextLine());
-
         String input = sc.nextLine();
 
         while (!input.equals("Decode")) {
